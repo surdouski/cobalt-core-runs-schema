@@ -23,19 +23,22 @@ Base = declarative_base()
 class CCCharacter(Base):
     __tablename__ = "cc_characters"
 
-    name = Column(String, primary_key=True)
+    key = Column(String, primary_key=True)
+    name = Column(String)
 
 
 class CCCard(Base):
     __tablename__ = "cc_cards"
 
-    name = Column(String, primary_key=True)
+    key = Column(String, primary_key=True)
+    name = Column(String)
 
 
 class CCArtifact(Base):
     __tablename__ = "cc_artifacts"
 
-    name = Column(String, primary_key=True)
+    key = Column(String, primary_key=True)
+    name = Column(String)
 
 
 class CCCharacterLinkedRun(Base):
@@ -45,7 +48,7 @@ class CCCharacterLinkedRun(Base):
     run_id = Column(
         Integer, ForeignKey("cc_runs.id")
     )  # related by internal id, not runId
-    character_id = Column(Integer, ForeignKey("cc_characters.name"))
+    character_id = Column(Integer, ForeignKey("cc_characters.key"))
 
 
 class CCCardLinkedRun(Base):
@@ -56,7 +59,7 @@ class CCCardLinkedRun(Base):
     run_id = Column(
         Integer, ForeignKey("cc_runs.id")
     )  # related by internal id, not runId
-    card_id = Column(Integer, ForeignKey("cc_cards.name"))
+    card_id = Column(Integer, ForeignKey("cc_cards.key"))
     upgrade = Column(String, default="None", nullable=False)
 
 
@@ -67,7 +70,7 @@ class CCArtifactLinkedRun(Base):
     run_id = Column(
         Integer, ForeignKey("cc_runs.id")
     )  # related by internal id, not runId
-    artifact_id = Column(Integer, ForeignKey("cc_artifacts.name"))
+    artifact_id = Column(Integer, ForeignKey("cc_artifacts.key"))
 
 
 class CCRun(Base):

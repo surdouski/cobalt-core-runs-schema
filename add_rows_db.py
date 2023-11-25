@@ -28,22 +28,22 @@ session = Session()
 
 
 def add_characters():
-    for character in characters:
-        new_character = CCCharacter(name=character)
+    for key, name in characters.items():
+        new_character = CCCharacter(key=key, name=name)
         session.add(new_character)
         session.commit()
 
 
 def add_cards():
-    for card in cards:
-        new_card = CCCard(name=card)
+    for key, name in cards.items():
+        new_card = CCCard(key=key, name=name)
         session.add(new_card)
         session.commit()
 
 
 def add_artifacts():
-    for artifact in artifacts:
-        new_artifact = CCArtifact(name=artifact)
+    for key, name in artifacts.items():
+        new_artifact = CCArtifact(key=key, name=name)
         session.add(new_artifact)
         session.commit()
 
@@ -80,16 +80,14 @@ def add_runs():
         for character_name in run["decks"]:
             new_character_linked_run = CCCharacterLinkedRun(
                 run_id=new_run.id,
-                character_id=session.get(CCCharacter, character_name).name,
+                character_id=session.get(CCCharacter, character_name).key,
             )
             session.add(new_character_linked_run)
 
         for card_object in run["cards"]:
             new_card_linked_run = CCCardLinkedRun(
                 run_id=new_run.id,
-                card_id=session.get(
-                    CCCard, card_object["type"]
-                ).name,  # type is our "name"
+                card_id=session.get(CCCard, card_object["type"]).key,
                 upgrade=card_object["upgrade"],
             )
             session.add(new_card_linked_run)
@@ -97,7 +95,7 @@ def add_runs():
         for artifact_name in run["artifacts"]:
             new_artifact_linked_run = CCArtifactLinkedRun(
                 run_id=new_run.id,
-                artifact_id=session.get(CCArtifact, artifact_name).name,
+                artifact_id=session.get(CCArtifact, artifact_name).key,
             )
             session.add(new_artifact_linked_run)
 
@@ -113,19 +111,19 @@ add_runs()
 def print_characters():
     characters = session.query(CCCharacter).all()
     for character in characters:
-        print(character.name)
+        print(character.key, character.name)
 
 
 def print_cards():
     cards = session.query(CCCard).all()
     for card in cards:
-        print(card.name)
+        print(card.key, card.name)
 
 
 def print_artifacts():
     artifacts = session.query(CCArtifact).all()
     for artifact in artifacts:
-        print(artifact.name)
+        print(artifact.key, artifact.name)
 
 
 print_characters()
